@@ -110,3 +110,16 @@ function readTranscription() {
 }
 
 
+function readResponse() {
+    console.log("readResponse")
+    const curRespo = document.getElementById('curRespo');
+
+        socket.on('readRespo', function(data) {
+        
+        console.log(JSON.stringify(data))
+        
+        const response = data["response"]
+
+        curRespo.textContent = response
+    }); 
+}

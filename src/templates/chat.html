@@ -5,19 +5,19 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/socket.io/client-dist/socket.io.min.js"></script>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
     <title>Chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script type="text/javascript">
     
-
     </script>
 </head>
 
 <body>
     <h1>Welcome to the Chat Page</h1>
-
+    <h1><i class="material-icons">favorite</i> Material Icons in Flask</h1>
     <button id="btnOne">Click ME!</button>
     <button id="btnTwo">Time in JS</button>
 
@@ -34,12 +34,19 @@
 
 
 
-    <h1>Welcome to the Flask Multiple Buttons Example</h1>
-    <form method="POST" action="/">
-        <button type="submit" name="button1">Button 1</button>
-        <button type="submit" name="button2">Button 2</button>
-        <button type="submit" name="button3">Button 3</button>
+
+
+
+    <form action="/read_input" method="post">
+        <button type="submit">Click me!</button>
     </form>
+
+
+    <form action="/send_text" method="post">
+        <input type="text" name="text" placeholder="Enter text...">
+        <button type="submit"><i class="fa fa-arrow-right"></button>
+    </form>
+
 
 
 
@@ -50,7 +57,8 @@
         btnTest2()
         readFromPy()
         btnPPressed()
-        readTranscription()  
+        readTranscription()
+        readResponse()  
         
     </script>
 

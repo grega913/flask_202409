@@ -1,31 +1,20 @@
-
+from pyaudio import PyAudio
 import time
-from icecream import ic
 import threading
-import tempfile
-import wave
-import pyaudio
-import keyboard                         
-import pyautogui
-import pyperclip
+from markupsafe import escape
+from flask_bcrypt import Bcrypt
 from groq import Groq
 import pyaudio
-import os
 from icecream import ic
-
-
-from recordin import save_audio, transcribe_audio
-
-from main import  socketio
-
-# Set up Groq client
+from playground.recordin import save_audio, transcribe_audio
+import os
 client = Groq()
 
-'''
 class AudioRecorder():
 
-    def __init__(self):
+    def __init__(self, socketio):
         print("init")
+        self.socketio = socketio
         self.p = pyaudio.PyAudio()
         self.frames = []
         self.transcription = None
@@ -59,7 +48,6 @@ class AudioRecorder():
        
         return self.frames, self.sample_rate
 
-
     def stop_recording(self):
         ic("def stop recording")
 
@@ -77,24 +65,11 @@ class AudioRecorder():
 
 
             # Emit the transcription to the client
-            socketio.emit('transcription_ready', {'transcription': transcription})
-
+            #socketio.emit('transcription_ready', {'transcription': transcription})
+           
+            self.socketio.emit('readTrans', {'transcription': transcription})
         else:
             print("Transcription failed.")
 
         # Clean up temporary file
         os.unlink(temp_audio_file)
-
-'''
-
-
-
-
-
-if __name__=="__main__":
-    print("starting in playSignals")
-
-
-    
-
-

@@ -9,3 +9,7 @@ pyautogui
 pyperclip
 groq
 flask_bcrypt
+langchain-core
+langchain-community
+langchain-groq
+Flask-Caching

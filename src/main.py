@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, redirect, url_for, request, render_template, jsonify
 from flask_socketio import SocketIO
 import time
 import threading
@@ -8,94 +8,38 @@ from markupsafe import escape
 from flask_bcrypt import Bcrypt
 from groq import Groq
 import pyaudio
+import json
+from helperz import add, subtract, process_text, append_record
+from AudioRecorder import AudioRecorder
 
-from recordin import save_audio, transcribe_audio
+import random
+from datetime import datetime
+
+
+
+
+
+
+from playground.recordin import save_audio, transcribe_audio
+from login import valid_login, log_the_user_in
+
+from ai.lesson7 import get_chain_with_message_history
+
+from data.various import mock_json
+
 
 app = Flask(__name__)
+
 
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
+ar = AudioRecorder(socketio=socketio)
+chain_with_message_history = get_chain_with_message_history()
 
-
-from login import valid_login, log_the_user_in
-
-client = Groq()
-
-
-class AudioRecorder():
-
-    def __init__(self):
-        print("init")
-        self.p = pyaudio.PyAudio()
-        self.frames = []
-        self.transcription = None
-        self.running = None
-        self.chunk=1024
-        self.sample_rate = 16000
-
-    def start_recording(self):
-        self.running = True
-        self.transcription = None
-        self.frames=[]
-
-        stream = self.p.open(
-            format=pyaudio.paInt16,
-            channels=1,
-            rate=self.sample_rate,
-            input=True,
-            frames_per_buffer=self.chunk,
-        )
-
-
-        while self.running:
-            data = stream.read(self.chunk)
-            self.frames.append(data)
-        
-        ic("Recording finished.")
-        stream.stop_stream()
-        stream.close()
-        self.p.terminate()
-
-       
-        return self.frames, self.sample_rate
-
-
-    def stop_recording(self):
-        ic("def stop recording")
-
-        self.running = False
-        temp_audio_file = save_audio(self.frames, self.sample_rate)
-        transcription = transcribe_audio(temp_audio_file)
-
-        # Copy transcription to clipboard
-        if transcription:
-            ic("\nTranscription:")
-            ic(transcription)
-            ic("Copying transcription to clipboard...")
-            # copy_transcription_to_clipboard(transcription)
-            ic("Transcription copied to clipboard and pasted into the application.")
-
-
-            # Emit the transcription to the client
-            #socketio.emit('transcription_ready', {'transcription': transcription})
-           
-            socketio.emit('readTrans', {'transcription': transcription})
-        else:
-            print("Transcription failed.")
-
-        # Clean up temporary file
-        os.unlink(temp_audio_file)
-
-
-
-ar = AudioRecorder()
-
-
-@app.route('/index')
+@app.route('/')
 def index():
     return render_template('/index.html')
-
 
 
 @app.route('/chat')
@@ -103,29 +47,12 @@ def chat():
     return render_template('/chat.html') 
 
 
-
 @app.route('/chat', methods=['POST', 'GET'])
 def handle_button_click():
 
     if request.method == 'POST':
-
-        button_name = request.form['button']
-
-        if button_name == 'button1':
-            # Function for Button 1
-            print("Button 1 clicked!")
-            # Perform actions specific to Button 1
-        elif button_name == 'button2':
-            # Function for Button 2
-            print("Button 2 clicked!")
-            # Perform actions specific to Button 2
-        elif button_name == 'button3':
-            # Function for Button 3
-            print("Button 3 clicked!")
-            # Perform actions specific to Button 3
-        else:
-            print("Invalid button pressed.")
-
+        ic("post method in handle_button_click")
+        
     # Return the template to keep the page visible
     return render_template('chat.html')
 
@@ -164,7 +91,6 @@ def hello(name=None):
     return render_template('hello.html', name=name)
 
 
-
 def show_the_login_form(name=None):
     return render_template("/hello.html", name = name)
 
@@ -184,13 +110,94 @@ def button_clicked():
 
 
 
+@app.route('/read_input', methods=['POST', 'GET'])
+def read_input():
+    if request.method=="POST":
+        return str(add(5,6))
+    
+@app.route('/send_text', methods=['POST'])
+def send_text():
+    text = request.form['text']
+    # Call your Python function here
+    process_text(text)
+    return str(text)
+
+
+@app.route('/mock')
+def mock():
+  return render_template('mock.html', data=mock_json)
+
+
+@app.route('/user_message', methods=['POST'])
+def user_message():
+    if request.method == "POST":
+        user_input = request.form['user_input']
 
 
 
 
 
+        # Call your AI function here to generate a response based on the user's input
+        ic(user_input)
+        mock_json_new = append_record(mock_json)
+        time.sleep(0.2)
+        ic(mock_json_new)
+        return render_template('mock.html', data=mock_json_new)
+    
+    else:
+        return "Kr neki"
 
 
+
+@app.route('/ai')
+def ai():
+  return render_template('ai.html')
+
+
+@app.route('/api/datapoint2', methods= ['POST'])
+def api_datapoint2():
+    ic("api_datapoint2")
+
+    user_input = request.get_json()['user_input']
+    ic(user_input)
+
+    
+    response = chain_with_message_history.invoke(
+         {"input": user_input},
+         {"configurable": {"session_id": "abc123"}},
+    )
+
+    ic(response)
+    content = response.content
+    return content
+
+
+
+
+
+@app.route('/ena')
+def ena():
+  return render_template('temp1.html')
+
+@app.route('/api/datapoint')
+def api_datapoint():
+
+    ic(api_datapoint)
+
+    random_number = random.randint(1, 100)
+    double_random_number = random_number * 2
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    dictionary_to_return = {
+        'random_number': random_number,
+        'double_random_number': double_random_number,
+        'timestamp': timestamp
+    }
+
+    return jsonify(dictionary_to_return)
+
+
+        
 
 
 
@@ -214,7 +221,6 @@ def print_time():
         time.sleep(1)
 
 # Start the function in a separate thread
-
 
 
 @socketio.on('pDown')

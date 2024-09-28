@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JSON Data</title>
+</head>
+
+<body>
+    <h1>JSON Data</h1>
+    <ul>
+        {% for item in data %}
+        <li>
+            <p>User: {{ item.user }}</p>
+            <p>AI: {{ item.ai }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    <form action="/user_message" method="post">
+        <input type="text" name="user_input" placeholder="Enter your message">
+        <input type="submit" value="Send">
+    </form>
+</body>
+
+</html>

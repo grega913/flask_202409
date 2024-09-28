@@ -131,3 +131,20 @@ input[type="submit"]:hover {
     font-size: 14px;
     margin-top: 10px;
 }
+
+.conversation {
+    list-style: none;
+    padding: 0;
+}
+
+.conversation-item {
+    margin-bottom: 10px;
+}
+
+.user-message {
+    color: blue;
+}
+
+.ai-message {
+    color: green;
+}
