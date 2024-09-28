@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io/client-dist/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <title>Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script type="text/javascript">
+    
+
+    </script>
+</head>
+
+<body>
+    <h1>Welcome to the Chat Page</h1>
+
+    <button id="btnOne">Click ME!</button>
+    <button id="btnTwo">Time in JS</button>
+
+    <ul id="currentTime"></ul>
+    <ul id="currentTimePy"></ul>
+
+    <ul id="currentTranscription"></ul>
+
+    <a href="{{ url_for('index') }}">Go Home</a>
+    <a href="{{ url_for('login') }}">Go To Login</a>
+    <a href="{{ url_for('hello') }}">Go To Hello</a>
+
+    <div class="p-pressed" style="display: none;">REC in Progress!!!</div>
+
+
+
+    <h1>Welcome to the Flask Multiple Buttons Example</h1>
+    <form method="POST" action="/">
+        <button type="submit" name="button1">Button 1</button>
+        <button type="submit" name="button2">Button 2</button>
+        <button type="submit" name="button3">Button 3</button>
+    </form>
+
+
+
+    <script>
+        // Call the function every second to update the time
+        setInterval(displayCurrentTime, 1000);
+        btnTest()
+        btnTest2()
+        readFromPy()
+        btnPPressed()
+        readTranscription()  
+        
+    </script>
+
+
+</body>
+
+</html>

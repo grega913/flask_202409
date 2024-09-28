@@ -1,0 +1,11 @@
+flask
+icecream
+requests
+python-dotenv
+flask-socketio
+pyaudio
+keyboard                         
+pyautogui
+pyperclip
+groq
+flask_bcrypt

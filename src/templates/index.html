@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io/client-dist/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <title>Test</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script type="text/javascript">
+
+
+
+    
+
+    </script>
+</head>
+
+<body>
+    <h1>Welcome to the Index Page</h1>
+    <p>This is the main page of the web application.</p>
+    <button id="btnOne">Click ME!</button>
+    <button id="btnTwo">Time in JS</button>
+    
+    <ul id="currentTime"></ul>
+    <ul id="currentTimePy"></ul>
+
+    <a href="{{ url_for('chat') }}">Go Chat</a>
+
+
+    <script>
+        // Call the function every second to update the time
+        setInterval(displayCurrentTime, 1000);
+        btnTest()
+        btnTest2()
+        readFromPy()
+    </script>
+    
+
+</body>
+
+</html>
