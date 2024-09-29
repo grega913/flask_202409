@@ -9,7 +9,13 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory
 import time
+
+
+import pickle
+
+
 
 # region Lesson7Topic10 - Graphical UI for AIAssistant
 
@@ -92,7 +98,10 @@ def st_chat_with_generator():
 
 # function that returns chain. We'll be invoking this in other function.
 # by setting st.cache_resource, this only runs single time when called in other function. If this is not cached, ChetMessageHistory would not work, as it would initialize every time streamlit refreshes
-#@st.cache_resource()
+#@st.cache_resource()// this was in streamlit, well use session in flask
+
+
+# - simplest version - ChatMessages managed just for the session
 
 def get_chain_with_message_history():
 
@@ -114,6 +123,8 @@ def get_chain_with_message_history():
 
     chain = prompt | model
 
+    
+
     chain_with_message_history = RunnableWithMessageHistory(
         chain,
         lambda session_id: chat_history,
@@ -121,8 +132,12 @@ def get_chain_with_message_history():
         history_messages_key="chat_history",
     )
 
+
+        
+
     return chain_with_message_history
 
+    
 
 
 

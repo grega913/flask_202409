@@ -3,39 +3,40 @@ from flask_socketio import SocketIO
 import time
 import threading
 from icecream import ic
-import os
+
+
 from markupsafe import escape
-from flask_bcrypt import Bcrypt
-from groq import Groq
-import pyaudio
-import json
+
+
+
 from helperz import add, subtract, process_text, append_record
 from AudioRecorder import AudioRecorder
-
+from flask import session 
 import random
 from datetime import datetime
 
 
-
-
-
-
 from playground.recordin import save_audio, transcribe_audio
 from login import valid_login, log_the_user_in
-
 from ai.lesson7 import get_chain_with_message_history
+from ai.test_persistence import get_chain_with_message_history_2, invoke_and_save
 
 from data.various import mock_json
 
 
 app = Flask(__name__)
-
-
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
-
 ar = AudioRecorder(socketio=socketio)
+
+
+
+
 chain_with_message_history = get_chain_with_message_history()
+chain_with_message_history_2 = get_chain_with_message_history_2()
+
+
+
 
 @app.route('/')
 def index():
@@ -169,9 +170,27 @@ def api_datapoint2():
 
     ic(response)
     content = response.content
+
     return content
 
 
+@app.route('/api/datapoint3', methods= ['POST'])
+def api_datapoint3():
+    ic("api_datapoint3")
+
+    user_input = request.get_json()['user_input']
+    ic(user_input)
+
+
+
+
+    
+    response = invoke_and_save(chain_with_message_history_2, "abc123", user_input)
+
+    ic(response)
+    
+
+    return response
 
 
 
@@ -251,5 +270,7 @@ if __name__ == '__main__':
     record_thread.daemon = True  # Set the thread as a daemon so it will exit when the main program exits
     record_thread.start()
     '''
+
+
 
     socketio.run(app, debug=True, use_reloader=True)

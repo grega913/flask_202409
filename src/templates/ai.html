@@ -39,31 +39,11 @@
         const userInputField = document.getElementById('user_input');
         const submitButton = document.getElementById('submit');
 
-        //readResponse()
-        /*
-                function getInvoke() {
-
-                        url = "/api/datapoint2";
-
-                        axios.get(url)
-                            .then(function (response) {
-
-                                // The data will all be returned as a JSON object
-                                // We can access the data by using the data property of the response object
-
-                                document.getElementById('lastInput').innerHTML = response.content
-
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
-                    }
-        */
             
                     submitButton.addEventListener('click', () => {
                             console.log("clicking")
                             const userInput = userInputField.value;
-                            axios.post('/api/datapoint2', { user_input: userInput })
+                            axios.post('/api/datapoint3', { user_input: userInput })
                                 .then(response => {
                                     // Do something with the response data
                                     console.log(response.data);
