@@ -9,6 +9,7 @@ from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
 
 from icecream import ic
 
@@ -112,7 +113,8 @@ def get_chain_with_message_history_2():
 
     print("get_chain_with_message_history_2")
 
-    model = ChatGroq()
+    #model = ChatGroq()
+    model = ChatOpenAI()
 
     chat_history = ChatMessageHistory()
 
@@ -147,8 +149,6 @@ def get_chain_with_message_history_2():
     )
 
 
-        
-
     return chain_with_message_history_2
 
 
@@ -157,7 +157,7 @@ def get_chain_with_message_history_2():
 def invoke_and_save(chain, session_id, input_text):
     # Save the user question with role "human"
 
-    print("invoke and save")
+    ic("invoke and save")
 
     save_message(session_id, "human", input_text)
     

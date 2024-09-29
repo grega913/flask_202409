@@ -148,3 +148,44 @@ input[type="submit"]:hover {
 .ai-message {
     color: green;
 }
+
+#container {
+    display: flex;
+    justify-content: center;
+    max-width: 50%;
+}
+
+.message_user {
+    text-align: left;
+}
+
+.message_ai {
+    text-align: right;
+    font-size: 0.8em;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.input-container input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 5px;
+}
+
+.submit-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.material-icons {
+    font-size: 20px;
+}
