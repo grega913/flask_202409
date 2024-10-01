@@ -1,67 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/socket.io/client-dist/socket.io.min.js"></script>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-
-    <title>Chat</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script type="text/javascript">
-    
-    </script>
+    <!--<script src="{{ url_for('static', filename='script.js') }}"></script>-->
+    <!-- Import axios, which makes HTTP requests in JS a little easier-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
+        integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Chat With History</title>
 </head>
 
 <body>
-    <h1>Welcome to the Chat Page</h1>
-    <h1><i class="material-icons">favorite</i> Material Icons in Flask</h1>
-    <button id="btnOne">Click ME!</button>
-    <button id="btnTwo">Time in JS</button>
-
-    <ul id="currentTime"></ul>
-    <ul id="currentTimePy"></ul>
-
-    <ul id="currentTranscription"></ul>
-
-    <a href="{{ url_for('routes.index') }}">Go Home</a>
 
 
-    <div class="p-pressed" style="display: none;">REC in Progress!!!</div>
-
-
-
-
-
-
-    <form action="/read_input" method="post">
-        <button type="submit">Click me!</button>
-    </form>
-
-
-    <form action="/send_text" method="post">
-        <input type="text" name="text" placeholder="Enter text...">
-        <button type="submit"><i class="fa fa-arrow-right"></button>
-    </form>
+    <div class="container mt-4">
+        <h1 class="chat-header">Chat With History</h1>
+        <div class="chat-container">
+            <ul id="message-list" class="list-group">
+                <li class="list-group-item message_user">Hello, how are you?</li>
+                <li class="list-group-item message_ai">I'm good, thank you! How can I assist you today?</li>
+                <li class="list-group-item message_user">Can you tell me a joke?</li>
+                <li class="list-group-item message_ai">Sure! Why don't scientists trust atoms? Because they make up
+                    everything!</li>
+                <li class="list-group-item message_user">That's a good one! What's the weather like today?</li>
+                <li class="list-group-item message_ai">It's sunny with a chance of rain later in the afternoon.</li>
+                <li class="list-group-item message_user">Great, I'll take an umbrella just in case.</li>
+                <li class="list-group-item message_ai">That's a smart choice!</li>
+                <li class="list-group-item message_user">Thanks for the help!</li>
+                <li class="list-group-item message_ai">You're welcome! Have a great day!</li>
+            </ul>
+            <div class="input-group mt-">
+                <input type="text" id="message-input" placeholder="Type a message..." class="form-control">
+                <div class="">
+                    <button class="btn btn-primary send-button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 
     <script>
-        // Call the function every second to update the time
-        setInterval(displayCurrentTime, 1000);
-        btnTest()
-        btnTest2()
-        readFromPy()
-        btnPPressed()
+        btnPressed()
         readTranscription()
-        readResponse()  
-        
     </script>
-
-
 </body>
 
 </html>

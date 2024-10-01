@@ -61,9 +61,12 @@ class AudioRecorder():
             ic(transcription)
             ic("Copying transcription to clipboard...")
             # copy_transcription_to_clipboard(transcription)
+
+
+
             ic("Transcription copied to clipboard and pasted into the application.")
 
-
+            
             # Emit the transcription to the client
             #socketio.emit('transcription_ready', {'transcription': transcription})
            

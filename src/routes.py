@@ -83,34 +83,21 @@ def mock():
   return render_template('mock.html', data=mock_json)
 
 
-@routes_blueprint.route('/ai')
-def ai():
-  return render_template('ai.html')
 
 
-@routes_blueprint.route('/api/datapoint2', methods= ['POST'])
-def api_datapoint2():
-    ic("api_datapoint2")
 
-    user_input = request.get_json()['user_input']
-    ic(user_input)
-
-    
-    response = chain_with_message_history.invoke(
-         {"input": user_input},
-         {"configurable": {"session_id": "abc123"}},
-    )
-
-    ic(response)
-    content = response.content
-
-    return content
 
 
 @routes_blueprint.route('/api/datapoint3', methods= ['POST'])
 def api_datapoint3():
     ic("api_datapoint3")
+    ic(request)
+    ic(request.get_json())
     user_input = request.get_json()['user_input']
+
+    print(user_input)
+    print()
+
     response = invoke_and_save(chain_with_message_history_2, "abc123", user_input)
     return response
 

@@ -58,7 +58,7 @@ def get_db():
 # Function to save a single message
 def save_message(session_id: str, role: str, content: str):
 
-    ic(session_id + " " + role + " " + content )
+    ic((session_id) + " " + (role) + " " + (content) )
 
     db = next(get_db())
     try:
@@ -158,6 +158,8 @@ def invoke_and_save(chain, session_id, input_text):
     # Save the user question with role "human"
 
     ic("invoke and save")
+    ic(session_id)
+    ic(input_text)
 
     save_message(session_id, "human", input_text)
     

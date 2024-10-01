@@ -1,5 +1,5 @@
 
-var socket = io();
+
 
 function helloWorld(name) {
   return `Hello, ${name}!`;
@@ -61,53 +61,9 @@ function btnTest2() {
 }
     
 
-function btnPPressed() {
-
-    let isPPressed = false;
-
-    console.log("btnPressed")
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'p' || event.key==="Pause") {
-           if (!isPPressed) {
-                console.log("p down")
-                isPPressed = true;
-                socket.emit("pDown", { event });
-                document.querySelector('.p-pressed').style.display = 'block';
-            }
-        }
-    });
 
 
-    document.addEventListener('keyup', (event) => {
-    if (event.key === 'p' || event.key==="Pause") {
-       if (isPPressed) {
-                console.log("p up")
-                isPPressed = false;
-                socket.emit("pUp", { event });
-                document.querySelector('.p-pressed').style.display = 'none';
-            }
-    }
 
-
-});
-
-
-}
-
-
-function readTranscription() {
-
-    console.log("readTranscription")
-    const currentTranscription = document.getElementById('currentTranscription');
-        socket.on('readTrans', function(data) {
-        console.log(JSON.stringify(data))
-        
-
-        const transcriptionStr = data["transcription"]
-
-        currentTranscription.textContent = transcriptionStr
-    });
-}
 
 
 function readResponse() {
