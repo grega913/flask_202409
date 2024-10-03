@@ -1,9 +1,11 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, send_file
 from markupsafe import escape
 from data.various import mock_json
 from icecream import ic
-
-from ai.test_persistence import get_chain_with_message_history_2, invoke_and_save
+import os
+from ai.persistence import get_chain_with_message_history_2, invoke_and_save
+from gtts import gTTS
+import time
 
 chain_with_message_history_2 = get_chain_with_message_history_2()
 
@@ -37,38 +39,14 @@ def chat():
     return render_template('/chat.html') 
 
 
-@routes_blueprint.route('/chat', methods=['POST', 'GET'])
-def handle_button_click():
-
-    if request.method == 'POST':
-        ic("post method in handle_button_click")
-        
-    # Return the template to keep the page visible
-    return render_template('chat.html')
-
-
-    return render_template('hello.html', name=name)
 
 
 
 
-@routes_blueprint.route('/button_clicked', methods=['POST'])
-def button_clicked():
-
-    if request.method=="POST":
-        print("button_clicked")
-        return "This was Post"
-
-    print("this is get")
-    return 'Button clicked!'
 
 
 
 
-@routes_blueprint.route('/read_input', methods=['POST', 'GET'])
-def read_input():
-    if request.method=="POST":
-        return str(add(5,6))
     
 @routes_blueprint.route('/send_text', methods=['POST'])
 def send_text():
@@ -99,6 +77,9 @@ def api_datapoint3():
     print()
 
     response = invoke_and_save(chain_with_message_history_2, "abc123", user_input)
+
+
+
     return response
 
 
@@ -130,5 +111,45 @@ def show_the_login_form(name=None):
 
 def do_the_login():
     return render_template("/chat.html")
+
+
+
+
+@routes_blueprint.route('/api/tts', methods=['POST'])
+def tts():
+
+    print("in tts")
+
+
+    # Access the text data sent in the request body (assuming JSON format)
+
+    data = request.get_json()
+    print(data)
+
+    # Extract the text from the JSON data
+    text = data.get('text')
+
+   
+
+
+    try:
+
+
+        if not text:
+            return jsonify({'error': 'Text is required'}), 400
+        
+
+        tts = gTTS(text=text, lang='en')
+
+        tts.save(os.path.join('src/static/audio', 'tts.mp3'))
+        
+        return send_file("static/audio/tts.mp3", mimetype="audio/mpeg", as_attachment=True)
+
+ 
+
+
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to generate TTS'}), 500
 
     

@@ -2,6 +2,7 @@ flask
 icecream
 requests
 python-dotenv
+langchain-chroma
 flask-socketio
 pyaudio
 keyboard                         
@@ -15,3 +16,4 @@ langchain-groq
 Flask-Caching
 SQLAlchemy
 langchain-openai
+gTTS

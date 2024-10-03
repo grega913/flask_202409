@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Mimic AI response with delay
             /*
-                        setTimeout(function() {
+            setTimeout(function() {
                 const aiMessage = document.createElement("li");
                 aiMessage.className = "message_ai";
                 aiMessage.textContent = "this is ai generated message: " + userMessageText;
@@ -47,7 +47,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     // Append the new list item to the existing list
                     messageList.appendChild(newAiMessageElement);
+
+
+                    //readAiMessage with tts
+                    //tts_axios(response.data)
+
+                    //using tts for message
+                    tts_fetch(response.data)
+
                 })
+
+
                 .catch(error => {
                     console.error(error);
             });
@@ -82,14 +92,15 @@ function btnPressed() {
 
     let isPPressed = false;
 
-        // Create the pPressedElement here
+    // Create the pPressedElement here
     const pPressedElement = document.createElement('div');
     pPressedElement.className = 'p-pressed';
     document.body.appendChild(pPressedElement);
+    document.querySelector('.p-pressed').style.display = 'none';
 
 
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'p' || event.key==="Pause") {
+        if (event.key==="Pause") {
            if (!isPPressed) {
                 console.log("p down")
                 isPPressed = true;
@@ -101,7 +112,7 @@ function btnPressed() {
 
 
     document.addEventListener('keyup', (event) => {
-    if (event.key === 'p' || event.key==="Pause") {
+    if (event.key==="Pause") {
        if (isPPressed) {
                 console.log("p up")
                 isPPressed = false;
@@ -130,6 +141,77 @@ function readTranscription() {
         console.log(JSON.stringify(data))
 
         const transcriptionStr = data["transcription"]
+
+
+        
         messageInput.value = transcriptionStr
+
+
+
+
+
+
     });
+}
+
+
+function tts_axios(myText) {
+
+        console.log("tts")
+        console.log(myText)
+
+        axios.post('/api/tts', {
+                    text: myText,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    responseType: 'arraybuffer'
+                    
+                })
+                .then(response => {
+                    console.log(response)
+                    //const blob = response.data;
+                    const audioBlob = new Blob([response.data], { type: 'audio/mpeg' });
+                    console.log(audioBlob)
+                    const audioUrl = URL.createObjectURL(audioBlob);
+
+
+                    console.log(audioUrl)
+
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                    })
+
+                .catch(error => console.error('Error:', error));
+}
+
+
+// problems with paths
+function tts_fetch(myText) {
+
+        console.log("tts_fetch")
+        console.log(myText)
+
+            setTimeout(function() {
+
+
+                fetch('/api/tts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: myText })
+                })
+                .then(response => response.blob())
+                .then(blob => {
+
+                    const audioUrl = URL.createObjectURL(blob);
+
+                    console.log(audioUrl)
+                    
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                })
+                .catch(error => console.error('Error:', error));
+            }, 50);
 }
