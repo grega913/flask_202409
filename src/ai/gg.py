@@ -15,11 +15,22 @@ from langchain_openai import OpenAIEmbeddings
 import os
 from icecream import ic
 from concurrent.futures import ThreadPoolExecutor
+import functools
 
+# helper function for caching chain, so we only need to run getChain once
+def cache_result(func):
+    cache = {}
 
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        key = str(args) + str(kwargs)
+        if key in cache:
+            return cache[key]
+        result = func(*args, **kwargs)
+        cache[key] = result
+        return result
 
-
-
+    return wrapper
 
 # loading documents from folder
 def loadPdfDocsFromFolder():
@@ -117,8 +128,7 @@ def storeSplitsIntoVectorDatabase_Chroma(splits):
     return retriever
 
 
-
-# function that returns a chain
+@cache_result
 def getRAGChain():
     ic("getRAGChain")
     
@@ -155,11 +165,43 @@ def getRAGChain():
 
     )
 
+    ic("returning rag_chain")
+
     return rag_chain
 
 
-if __name__ == "__main__":
-    
+
+def invokeRagChain(prompt: str):
+    ic("invokeRagChain")
     chain = getRAGChain()
-    ic(chain.invoke("Please provide 3 receipes for healthy breakfast?"))
+    response = chain.invoke(prompt)
+    ic(response)
+    return response
+
+
+
+def invokeMyChain(chain, prompt):
+    ic("invokeMyChain")
+    return chain.invoke(prompt)
+
+
+
+def prepare_rag_chain_after_seconds(secs=5):
+    ic("prepare_rag_chain_after_seconds")
+    # Long operation code here
+    # This will run in a separate thread
+    time.sleep(secs)  # Simulate a 10-second delay
+    ic("Rag chain prepared!")
+
+
+
+
+
+        
+
+
+if __name__ == "__main__":
+
+    invokeRagChain("Please provide 2 recepies where there's cucumber in it")
+    
 

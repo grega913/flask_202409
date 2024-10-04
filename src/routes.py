@@ -1,17 +1,38 @@
 from flask import Blueprint, render_template, request, jsonify, send_file
+
+
 from markupsafe import escape
 from data.various import mock_json
 from icecream import ic
 import os
 from ai.persistence import get_chain_with_message_history_2, invoke_and_save
+from ai.gg import getRAGChain
 from gtts import gTTS
+import threading
 import time
+from langchain_core.runnables import Runnable
+import functools
+
+
+from datetime import datetime
 
 chain_with_message_history_2 = get_chain_with_message_history_2()
 
 
 
+
+
+
+
 routes_blueprint = Blueprint("routes", __name__)
+
+
+
+@routes_blueprint.route('/cc')
+def cc():
+    return str(datetime.now())
+
+
 
 
 @routes_blueprint.route('/index')
@@ -33,20 +54,9 @@ def show_subpath(subpath):
     # show the subpath after /path/
     return 'Subpath %s' % escape(subpath)
 
-
 @routes_blueprint.route('/chat')
 def chat():
     return render_template('/chat.html') 
-
-
-
-
-
-
-
-
-
-
     
 @routes_blueprint.route('/send_text', methods=['POST'])
 def send_text():
@@ -55,16 +65,9 @@ def send_text():
 
     return str(text)
 
-
 @routes_blueprint.route('/mock')
 def mock():
   return render_template('mock.html', data=mock_json)
-
-
-
-
-
-
 
 @routes_blueprint.route('/api/datapoint3', methods= ['POST'])
 def api_datapoint3():
@@ -82,11 +85,9 @@ def api_datapoint3():
 
     return response
 
-
-
 @routes_blueprint.route('/ena')
 def ena():
-  return render_template('temp1.html')
+    return render_template('temp1.html')
 
 @routes_blueprint.route('/api/datapoint')
 def api_datapoint():
@@ -108,12 +109,8 @@ def api_datapoint():
 def show_the_login_form(name=None):
     return render_template("/hello.html", name = name)
 
-
 def do_the_login():
     return render_template("/chat.html")
-
-
-
 
 @routes_blueprint.route('/api/tts', methods=['POST'])
 def tts():
@@ -130,7 +127,6 @@ def tts():
     text = data.get('text')
 
    
-
 
     try:
 
@@ -153,3 +149,44 @@ def tts():
         return jsonify({'error': 'Failed to generate TTS'}), 500
 
     
+'''    
+@routes_blueprint.route('/gg')
+def gg():
+    return render_template("/gg.html")
+'''
+
+@routes_blueprint.route('/gg', methods = ['GET'])
+def gg():
+    ic("get gg route")
+
+
+
+    return render_template("/gg.html")
+
+
+
+
+# endpoint for executing invoke on chain
+@routes_blueprint.route('/api/gg', methods= ['POST'])
+def api_gg():
+    ic("api_gg")
+
+    chainRagPdfs = getRAGChain()
+
+    if request.method == "POST":
+        user_input = request.get_json()['user_input']
+
+        if chainRagPdfs:
+            ic("we have chain defined")
+            response = chainRagPdfs.invoke(user_input)
+            return response
+        
+        else:
+            return "No chainRagPdfs"
+        
+
+
+   
+
+
+

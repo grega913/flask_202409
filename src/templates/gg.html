@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io/client-dist/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gg.css') }}">
+    <script src="{{ url_for('static', filename='js/gg.js')}}"></script>
+    <title>GG</title>
+</head>
+
+<body>
+    
+    <div class="container mt-4">
+
+        <h1>Welcome to the GG Page</h1>
+        <h4>Ask GG something . . . </h4>
+        
+        <div id="currentTime"></div>
+        
+        <div>
+            <input type="text" id="message-input" placeholder="message for us">
+            <button id="my-button">Click me!</button>
+        </div>
+        
+        <div id="text-area"></div>
+
+
+    </div>
+
+    
+    
+    <script>
+        
+        //displayCurrentTime()
+        setInterval(displayCurrentTime, 1000);
+
+
+
+    </script>
+
+    
+
+    
+
+
+</body>
+
+</html>

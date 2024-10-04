@@ -1,0 +1,54 @@
+/* Add a border to the text area */
+textarea {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+    height: 200px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+/* Style the ingredients and instructions separately */
+.ingredients {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.instructions {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Add a heading to the recipe */
+h2 {
+    font-weight: bold;
+    margin-top: 0;
+}
+
+/* Add a bullet list to the ingredients */
+.ingredients ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ingredients li {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.ingredients li:last-child {
+    border-bottom: none;
+}
+
+/* Add a numbered list to the instructions */
+.instructions ol {
+    list-style: decimal;
+    padding: 0;
+    margin: 0;
+}
+
+.instructions li {
+    padding: 5px;
+}
+
