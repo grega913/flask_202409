@@ -56,7 +56,7 @@ def loadPdfDocsFromFolderWithMultithreadingAndBatchProcessing():
     ic(src_path)
 
     
-    root_directory = os.path.join(src_path, "src/data/pdfs")
+    root_directory = os.path.join(src_path, "src/data/pdfs_recipies_gg")
 
 
 

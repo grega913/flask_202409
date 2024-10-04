@@ -1,4 +1,13 @@
-# 20241003 - adding new route for pdfs loading from a folder - gluccose goddess
+# 20241004 - adding a
+
+# 20241003 - adding new route for pdfs loading from a folder - gg (glucose goddess)
+
+## relevant files:
+
+- ai/gg.py
+- routes.py -> new route defined: gg
+- templates/gg.html -> html template for displaying relevant data
+- static/gg.js -> js for gg.html template
 
 # 20241003 - working route is "/chat"
 
